@@ -71,54 +71,24 @@ void initBulletTextures(const char filename[], Tower* towers)
 	}
 }
 
-//Отрисовка пули если она активна, если нет то она пропадает за задником
-void WayBullet(Creep* creeps, Tower* towers)
+int Distance(Creep creep, Tower tower)
 {
-	for (int i = 0; i < 4; i++)
-	{
-		if (towers[i].shot_spawn and towers[i].lock != 101)
-		{
-			num = 0;
-			if (towers[i].bullet.y != creeps[num].yWay)
-			{
-				if (towers[i].bullet.y > creeps[num].yWay)
-				{
-					towers[i].bullet.y = towers[i].bullet.y - 1;
-				}
-				else if (towers[i].bullet.y < creeps[num].yWay)
-				{
-					towers[i].bullet.y = towers[i].bullet.y + 1;
-				}
-			}
-			if (towers[i].bullet.x != creeps[num].xWay)
-			{
-				if (towers[i].bullet.x > creeps[num].xWay)
-				{
-					towers[i].bullet.x = towers[i].bullet.x - 1;
-				}
-				else if (towers[i].bullet.x < creeps[num].xWay)
-				{
-					towers[i].bullet.x = towers[i].bullet.x + 1;
-				}
-			}
-			if (towers[i].bullet.x >= creeps[num].xWay and towers[i].bullet.x <= creeps[num].xWay + 42 and towers[i].bullet.y >= creeps[num].yWay and towers[i].bullet.y <= creeps[num].yWay + 84)
-			{
-				towers[i].shot_spawn = false;
-				creeps[num].health = creeps[num].health - towers[i].damage;
-			}
-			else if (creeps[num].active == false)
-			{
-				towers[i].lock = 101;
-				towers[i].shot_spawn = false;
-			}
-			SDL_RenderCopy(ren, towers[i].shot_tex, &towers[i].shot_anim, &towers[i].bullet);
-		}
-	}
+	return sqrt((creep.xWay - tower.spawn.x) * (creep.xWay - tower.spawn.x) + (creep.yWay - tower.spawn.y) * (creep.yWay - tower.spawn.y));
 }
 
-int Distance(Creep* creeps, Tower* towers, int k, int i)
+//Отрисовка пули если она активна, если нет то она пропадает за задником
+void WayBullet(Creep& creep, Tower& tower)
 {
-	return sqrt((creeps[i].xWay - towers[k].spawn.x + towers[k].spawn.w / 2) * (creeps[i].xWay - towers[k].spawn.x + towers[k].spawn.w / 2) + (creeps[i].yWay - towers[k].spawn.y + towers[k].spawn.h / 2) * (creeps[i].yWay - towers[k].spawn.y + towers[k].spawn.h / 2));
+	float angle = atan2(creep.yWay - tower.spawn.y, creep.xWay - tower.spawn.x);
+	tower.bullet.x += cos(angle);
+	tower.bullet.y += sin(angle);
+	if (Distance(creep, tower) >= tower.dist)
+	{
+		//Отнимаем хп у крипа
+		tower.bullet.x = (tower.spawn.x + tower.spawn.w / 2);
+		tower.bullet.y = (tower.spawn.y + tower.spawn.h / 2);
+	}
+	//Отрисовываем
 }
 
 void CheckDistance(int& timerBullet, int max_count_creeps, Creep* creeps, Tower* towers)
@@ -129,14 +99,14 @@ void CheckDistance(int& timerBullet, int max_count_creeps, Creep* creeps, Tower*
 		{
 			if (creeps[i].active)
 			{
-				towers[k].dist = Distance(creeps,towers,k, i);
+				towers[k].dist = Distance(creeps[i], towers[k]);
 				//printf("%i", towers[k].dist);
 				//system("cls");
 				if (towers[k].dist <= towers[k].rad and towers[k].lock == 101)
 				{
 					towers[k].lock = i;
 					timerBullet++;
-					WayBullet(creeps, towers);
+					WayBullet(creeps[towers[k].lock], towers[k]);
 
 				}
 			}
