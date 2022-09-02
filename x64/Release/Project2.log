@@ -1,0 +1,14 @@
+﻿  background.cpp
+W:\Курсач Прога\Project2 — копия\background.cpp(3,10): fatal error C1083: Не удается открыть файл включение: SDL.h: No such file or directory,
+  creeps.cpp
+W:\Курсач Прога\Project2 — копия\creeps.cpp(3,10): fatal error C1083: Не удается открыть файл включение: SDL.h: No such file or directory,
+  initialization.cpp
+W:\Курсач Прога\Project2 — копия\initialization.cpp(3,10): fatal error C1083: Не удается открыть файл включение: SDL.h: No such file or directory,
+  main.cpp
+W:\Курсач Прога\Project2 — копия\main.cpp(3,10): fatal error C1083: Не удается открыть файл включение: SDL.h: No such file or directory,
+  menu.cpp
+W:\Курсач Прога\Project2 — копия\menu.cpp(3,9): fatal error C1083: Не удается открыть файл включение: SDL.h: No such file or directory,
+  Save_and_Load.cpp
+W:\Курсач Прога\Project2 — копия\structs.h(3,9): fatal error C1083: Не удается открыть файл включение: SDL.h: No such file or directory,
+  tower.cpp
+W:\Курсач Прога\Project2 — копия\tower.cpp(2,9): fatal error C1083: Не удается открыть файл включение: SDL.h: No such file or directory,
